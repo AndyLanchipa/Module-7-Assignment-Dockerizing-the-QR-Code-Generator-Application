@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  qr-generator:
+    build: .
+    image: qr-code-generator-app:latest
+    container_name: qr-code-generator
+    environment:
+      - QR_URL=https://github.com/kaw393939
+      - QR_OUTPUT_DIR=qr_codes
+    volumes:
+      - ./qr_codes:/app/qr_codes
+      - ./logs:/app/logs
+    command: ["--url", "https://github.com/kaw393939"]
+    restart: unless-stopped
+
+  qr-generator-custom:
+    build: .
+    image: qr-code-generator-app:latest
+    container_name: qr-code-generator-custom
+    environment:
+      - QR_URL=https://www.njit.edu
+    volumes:
+      - ./qr_codes:/app/qr_codes
+      - ./logs:/app/logs
+    command: ["--url", "https://www.njit.edu", "--output", "njit_qr.png"]
+    profiles:
+      - custom
+
+  qr-generator-dev:
+    build: 
+      context: .
+      target: development
+    image: qr-code-generator-app:dev
+    container_name: qr-code-generator-dev
+    volumes:
+      - .:/app
+      - ./qr_codes:/app/qr_codes
+      - ./logs:/app/logs
+    environment:
+      - PYTHONPATH=/app
+      - QR_URL=https://github.com/development
+    command: ["--url", "https://github.com/development"]
+    profiles:
+      - development
