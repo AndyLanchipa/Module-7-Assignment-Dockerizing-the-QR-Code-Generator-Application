@@ -48,11 +48,20 @@ python main.py --url https://example.com --dir /custom/path
 
 ### Docker Usage
 
+#### Building the Docker Image
+
 ```bash
 # Build the image
 docker build -t qr-code-generator-app .
 
-# Run with default URL
+# Build with a specific tag
+docker build -t your-dockerhub-username/qr-code-generator-app:latest .
+```
+
+#### Running the Container
+
+```bash
+# Run with default URL (http://github.com/kaw393939)
 docker run -d --name qr-generator qr-code-generator-app
 
 # Run with custom URL
@@ -60,8 +69,46 @@ docker run -d --name qr-generator \
   -v $(pwd)/qr_codes:/app/qr_codes \
   qr-code-generator-app --url https://www.njit.edu
 
-# Check logs
+# Run with environment variables
+docker run -d --name qr-generator \
+  -e QR_URL=https://example.com \
+  -v $(pwd)/qr_codes:/app/qr_codes \
+  -v $(pwd)/logs:/app/logs \
+  qr-code-generator-app
+
+# Run interactively (for testing)
+docker run -it --rm \
+  -v $(pwd)/qr_codes:/app/qr_codes \
+  qr-code-generator-app --url https://www.github.com
+```
+
+#### Managing Containers
+
+```bash
+# Check container logs
 docker logs qr-generator
+
+# Stop the container
+docker stop qr-generator
+
+# Remove the container
+docker rm qr-generator
+
+# Remove the image
+docker rmi qr-code-generator-app
+```
+
+#### Pushing to DockerHub
+
+```bash
+# Login to DockerHub
+docker login
+
+# Tag your image
+docker tag qr-code-generator-app your-dockerhub-username/qr-code-generator-app:latest
+
+# Push to DockerHub
+docker push your-dockerhub-username/qr-code-generator-app:latest
 ```
 
 ## Output
