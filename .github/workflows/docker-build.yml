@@ -30,7 +30,7 @@ jobs:
         ls -la qr_codes/
     
     - name: Upload test artifacts
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: test-qr-code
         path: qr_codes/test_qr.png
@@ -65,7 +65,7 @@ jobs:
         docker logs test-container
     
     - name: Upload Docker test artifacts
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: docker-qr-code
         path: docker-qr-codes/
